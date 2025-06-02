@@ -24,3 +24,10 @@ setx XDG_CACHE_HOME "%USERPROFILE%\.cache" /M
 setx XDG_RUNTIME_DIR "%TEMP%\nvim" /M
 setx NVIM_APPNAME windows-nvim-config /M
 ```
+
+# 🧹 Remove Environment Variables
+To remove a variable, set its value to an empty string:
+```
+setx XDG_CONFIG_HOME ""
+```
+Note: This removes the variable from future sessions but doesn't affect the current session.

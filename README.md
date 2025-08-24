@@ -40,3 +40,13 @@ To remove a variable, set its value to an empty string:
 setx XDG_CONFIG_HOME ""
 ```
 Note: This removes the variable from future sessions but doesn't affect the current session.
+
+## In powershell verify it like this
+```powershell
+$Env:NVIM_APPNAME
+```
+
+## In CMD verify it like this
+```
+echo %NVIM_APPNAME%
+```

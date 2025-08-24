@@ -50,3 +50,11 @@ $Env:NVIM_APPNAME
 ```
 echo %NVIM_APPNAME%
 ```
+
+# install this things for tree-sitter
+```
+scoop install main/tree-sitter
+```
+```
+scoop install main/zig
+```

@@ -1,4 +1,7 @@
 
+
+# I Switched to LazyVim Distro.
+
 # Windows Neovim Configuration
 clone to `~/.config/windows-nvim-config`
 ## 🛠️ Set Environment Variables Permanently (User Scope)

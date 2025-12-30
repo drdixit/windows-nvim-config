@@ -5,21 +5,7 @@ vim.pack.add({
 vim.pack.add({ "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" })
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "php",
-    "bash",
-    "c",
-    "diff",
-    "html",
-    "lua",
-    "luadoc",
-    "markdown",
-    "markdown_inline",
-    "query",
-    "vim",
-    "vimdoc",
-    "dart",
-  },
+  ensure_installed = { "lua", "luadoc", "dart", },
   auto_install = true,
   highlight = { enable = true },
   indent = { enable = true },

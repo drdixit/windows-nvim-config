@@ -1,6 +1,6 @@
 vim.pack.add({ "https://github.com/folke/tokyonight.nvim" })
 
-local transparent = false -- set to true if you would like to enable transparency
+local transparent = true -- set to true if you would like to enable transparency
 
 local bg = "#011628"
 local bg_dark = "#011423"
@@ -36,6 +36,11 @@ require("tokyonight").setup({
     colors.fg_float = fg
     colors.fg_gutter = fg_gutter
     colors.fg_sidebar = fg_dark
+  end,
+  on_highlights = function(hl, c)
+    -- hl.ColorColumn = { bg = "#143652" }
+    -- hl.ColorColumn = { bg = "#0A2540" }
+    hl.ColorColumn = { bg = "#081D32" }
   end,
 })
 

@@ -1,10 +1,32 @@
 require("options")
+
+-- CURRENT LOAD ORDER
+--
+-- nvim-web-devicons
+--
+-- tokyonight
+--
+-- lualine
+--
+-- nvim-treesitter
+-- nvim-treesitter-textobjects
+--
+-- plenary.nvim
+-- telescope.nvim
+-- telescope-ui-select
+--
+-- gitsigns.nvim
+--
+-- snacks.nvim
+-- opencode
+
 vim.pack.add({ "https://github.com/nvim-tree/nvim-web-devicons.git" })
 require("plugins.tokyonight")
 require("plugins.lualine")
 require("plugins.treesitter")
 require("plugins.telescope")
 require("plugins.gitsigns")
+require("plugins.opencode")
 
 vim.lsp.enable("dartls")
 
@@ -64,3 +86,6 @@ vim.keymap.set('n', '<leader>rd', function()
   -- Auto-resize terminal
   vim.cmd('resize 15')
 end, { desc = 'Run Dart file' })
+
+
+require("colors.black-metal")

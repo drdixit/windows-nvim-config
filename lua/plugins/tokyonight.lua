@@ -1,6 +1,6 @@
 vim.pack.add({ "https://github.com/folke/tokyonight.nvim" })
 
-local transparent = true -- set to true if you would like to enable transparency
+local transparent = false -- set to true if you would like to enable transparency
 
 local bg = "#011628"
 local bg_dark = "#011423"

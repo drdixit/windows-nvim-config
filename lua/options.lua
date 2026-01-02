@@ -8,13 +8,7 @@ vim.opt.updatetime = 200 -- faster update time for cursorhold events
 vim.opt.timeoutlen = 300 -- timeout for mapped sequences (ms)
 vim.g.have_nerd_font = true -- enable nerd font support
 vim.opt.termguicolors = true -- enable true colors in the terminal
--- vim.cmd([[
---   colorscheme retrobox
---   highlight Normal guibg=none
---   highlight NormalFloat guibg=none
---   highlight SignColumn guibg=none
---   highlight LineNr guibg=none
--- ]])
+
 vim.opt.background = "dark" -- use dark background
 
 vim.g.mapleader = " " -- sets global leader key

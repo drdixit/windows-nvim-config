@@ -107,3 +107,12 @@ vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.h
 -- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
 vim.keymap.set("n", "+", "<C-a>", { desc = "Increment", noremap = true })
 vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement", noremap = true })
+
+vim.keymap.set('n', '<leader>rd', function()
+  local file = vim.fn.expand('%')
+  vim.cmd(':w')
+  vim.cmd('split | terminal dart run ' .. file)
+  vim.cmd('startinsert')
+  -- Auto-resize terminal
+  vim.cmd('resize 15')
+end, { desc = 'Run Dart file' })

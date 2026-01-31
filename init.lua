@@ -1,118 +1,47 @@
-require('options')
+require("basic")
+require("config.lazy")
 
--- require('colorscheme').setup('ayu-dark')
--- require('colorscheme').setup('material-darker')
--- require('colorscheme').setup('material')
-require('colorscheme').setup('default-dark')
-vim.cmd([[
-  highlight Normal guibg=none
-  highlight NormalFloat guibg=none
-  highlight SignColumn guibg=none
-  highlight LineNr guibg=none
-]])
+local transparent = true -- set to true to enable transparency, false to disable
 
-vim.pack.add({ "https://github.com/nvim-tree/nvim-web-devicons.git" })
-require('plugins.treesitter')
-require('plugins.telescope')
-require('plugins.gitsigns')
+local function apply_transparency()
+  if transparent then
 
----------------------------------------
----------- LSP CONFIGURATION ----------
----------------------------------------
+    -- Core UI
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })           -- Main editor background
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })      -- Floating window background
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })         -- Non-current window background
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })       -- Sign column/gutter background (git signs, diagnostics)
+    vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })       -- Active status line background
+    vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })     -- Inactive status line background
+    vim.api.nvim_set_hl(0, "VertSplit", { bg = "none" })        -- Vertical split separator background
+    vim.api.nvim_set_hl(0, "LineNr", { bg = "none" })           -- Line number column background
+    vim.api.nvim_set_hl(0, "CursorLineNr", { bg = "none" })     -- Current line number background
 
-vim.lsp.enable("dartls")
+    -- GitSigns
+    -- vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#A6E22E", bg = "NONE" })      -- Monokai green
+    -- vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#66D9EF", bg = "NONE" })   -- Monokai cyan
+    -- vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#F92672", bg = "NONE" })   -- Monokai red
 
-vim.diagnostic.config({
-  update_in_insert = false,
-  severity_sort = true,
+    -- GitSigns for base16-hardcore
+    vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#70d675", bg = "NONE" })      -- hardcore green
+    vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#66d9ef", bg = "NONE" })   -- hardcore cyan
+    vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#f92672", bg = "NONE" })   -- hardcore red
 
-  float = { border = "rounded", source = true },
-  underline = { severity = vim.diagnostic.severity.ERROR },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "󰅚 ",
-      [vim.diagnostic.severity.WARN] = "󰀪 ",
-      [vim.diagnostic.severity.INFO] = "󰋽 ",
-      [vim.diagnostic.severity.HINT] = "󰌶 ",
-    },
-    numhl = {
-      [vim.diagnostic.severity.ERROR] = "ErrorMsg",
-      [vim.diagnostic.severity.WARN] = "WarningMsg",
-    },
-  },
+  end
+end
 
-  virtual_text = {
-    source = true,
-    spacing = 2,
-    format = function(diagnostic)
-      local diagnostic_message = {
-        [vim.diagnostic.severity.ERROR] = diagnostic.message,
-        [vim.diagnostic.severity.WARN] = diagnostic.message,
-        [vim.diagnostic.severity.INFO] = diagnostic.message,
-        [vim.diagnostic.severity.HINT] = diagnostic.message,
-      }
-      return diagnostic_message[diagnostic.severity]
-    end,
-  },
+-- Apply transparency after everything loads
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.schedule(apply_transparency)
+  end,
+  desc = "Apply transparency after all plugins load",
 })
 
-vim.pack.add({
-  { src="https://github.com/saghen/blink.cmp", version=vim.version.range("1") },
-})
-require("blink.cmp").setup({
-  keymap = { preset = 'default' },
-  appearance = {
-    nerd_font_variant = 'normal'
-  },
-  completion = { documentation = { auto_show = true } },
-  sources = {
-    default = { 'lsp', 'path', 'buffer' },
-  },
-  fuzzy = { implementation = "prefer_rust_with_warning" }
+-- Create autocommand to reapply transparency on colorscheme change
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = apply_transparency,
+  desc = "Apply transparency settings after colorscheme change",
 })
 
-------------------------------------
----------- OPENCODE SETUP ----------
-------------------------------------
-vim.pack.add({
-  { src="https://github.com/folke/snacks.nvim" },
-  { src="https://github.com/NickvanDyke/opencode.nvim"}
-})
-
-require('snacks').setup({
-  input = {},
-  picker = {},
-  terminal = {},
-})
-
----@type opencode.Opts
-vim.g.opencode_opts = {
-  -- Your configuration, if any — see `lua/opencode/config.lua`, or "goto definition".
-}
-
--- Required for `opts.events.reload`.
-vim.o.autoread = true
-
--- Recommended/example keymaps.
-vim.keymap.set({ "n", "x" }, "<C-a>", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask opencode" })
-vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end,                          { desc = "Execute opencode action…" })
-vim.keymap.set({ "n", "t" }, "<C-M-b>", function() require("opencode").toggle() end,                          { desc = "Toggle opencode" })
-
-vim.keymap.set({ "n", "x" }, "go",  function() return require("opencode").operator("@this ") end,        { expr = true, desc = "Add range to opencode" })
-vim.keymap.set("n",          "goo", function() return require("opencode").operator("@this ") .. "_" end, { expr = true, desc = "Add line to opencode" })
-
-vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end,   { desc = "opencode half page up" })
-vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "opencode half page down" })
-
--- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
-vim.keymap.set("n", "+", "<C-a>", { desc = "Increment", noremap = true })
-vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement", noremap = true })
-
-vim.keymap.set('n', '<leader>rd', function()
-  local file = vim.fn.expand('%')
-  vim.cmd(':w')
-  vim.cmd('split | terminal dart run ' .. file)
-  vim.cmd('startinsert')
-  -- Auto-resize terminal
-  vim.cmd('resize 15')
-end, { desc = 'Run Dart file' })

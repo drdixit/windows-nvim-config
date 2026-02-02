@@ -45,3 +45,33 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   desc = "Apply transparency settings after colorscheme change",
 })
 
+vim.keymap.set("n", "<C-Space>", function()
+  print("Ctrl+Space pressed!")
+end, { desc = "Custom function" })
+
+vim.lsp.config("*", { root_markers = { ".git" } })
+vim.lsp.enable("dartls")
+
+vim.diagnostic.config({
+  update_in_insert = false, --Diagnostics won't update while you're typing in insert mode (only when you leave insert mode)
+  severity_sort = true, -- When multiple diagnostics exist at the same location, they're sorted by severity (errors first, then warnings, info, hints)
+  float = { border = "rounded", source = true }, -- When you hover over a diagnostic
+  underline = { severity = vim.diagnostic.severity.ERROR }, -- Only ERROR-level diagnostics get underlined in your code
+  signs = {
+    text = { -- Icons shown in the sign column (left side)
+      [vim.diagnostic.severity.ERROR] = "󰅚 ",
+      [vim.diagnostic.severity.WARN] = "󰀪 ",
+      [vim.diagnostic.severity.INFO] = "󰋽 ",
+      [vim.diagnostic.severity.HINT] = "󰌶 ",
+    },
+    numhl = { -- Highlights the line number
+      [vim.diagnostic.severity.ERROR] = "ErrorMsg",
+      [vim.diagnostic.severity.WARN] = "WarningMsg",
+    },
+  },
+  virtual_text = false, -- Text shows up at the end of the line
+  virtual_lines = { -- Teest shows up underneath the line, with virtual lines
+    source = true,
+  },
+  jump = { float = true }, -- -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
+})

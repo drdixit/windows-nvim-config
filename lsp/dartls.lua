@@ -6,9 +6,9 @@
 
 ---@type vim.lsp.Config
 return {
-  cmd = { 'dart', 'language-server', '--protocol=lsp' },
-  filetypes = { 'dart' },
-  root_markers = { 'pubspec.yaml' },
+  cmd = { "dart", "language-server", "--protocol=lsp" },
+  filetypes = { "dart" },
+  root_markers = { "pubspec.yaml" },
   init_options = {
     onlyAnalyzeProjectsWithOpenFiles = true,
     suggestFromUnimportedLibraries = true,
@@ -16,6 +16,7 @@ return {
     outline = true,
     flutterOutline = true,
   },
+  ---@type lspconfig.settings.dartls
   settings = {
     dart = {
       completeFunctionCalls = true,

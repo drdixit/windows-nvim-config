@@ -2,37 +2,31 @@ return {
   "nvim-treesitter/nvim-treesitter",
   lazy = false,
   build = ":TSUpdate",
+  branch = "main",
+  -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
   config = function()
-    -- okay as 31 Jan, 2026 Stuff has changed
-    -- we are pulling main by default so on main branch they change the name
-    -- of the module from configs => config
-    -- so you do nvim-treesitter.config not nvim-treesitter.configs
-    --
-    -- so if you use master branch then you get one combined config for both treesitter and text objects
-    -- but if you use main branch then you need to seperately configure text objects through ("nvim-treesitter-textobjects").setup
-    --
-    --
-    -- incremental_selection is also gone keep that in mind
-    -- incremental_selection = {
-    --   enable = true,
-    --   keymaps = {
-    --     init_selection = "<C-Space>",
-    --     node_incremental = "<C-Space>",
-    --     scope_incremental = false,
-    --     node_decremental = "<BS>",
-    --   },
-    -- },
-    -- you can use this plugins for incremental selection daliusd/incr.nvim
-    -- or if you relay on any modules that is from master branch checkout this plugin MeanderingProgrammer/treesitter-modules.nvim
-    --
-    -- also they drop some commands as well that you run in command line
-    -- :TSInstallInfo :TSToggle :TSEnable :TSDisable :TSBufEnable etc.
-    --
-    require("nvim-treesitter.config").setup({
-      ensure_installed = { "php", "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc", "dart", },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
+    local parsers = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc", "dart" }
+    require("nvim-treesitter").install(parsers)
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(args)
+        local buf, filetype = args.buf, args.match
+
+        local language = vim.treesitter.language.get_lang(filetype)
+        if not language then return end
+
+        -- check if parser exists and load it
+        if not vim.treesitter.language.add(language) then return end
+        -- enables syntax highlighting and other treesitter features
+        vim.treesitter.start(buf, language)
+
+        -- enables treesitter based folds
+        -- for more info on folds see `:help folds`
+        -- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+        -- vim.wo.foldmethod = "expr"
+
+        -- enables treesitter based indentation
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
   end,
 }

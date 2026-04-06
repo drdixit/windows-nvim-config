@@ -10,22 +10,30 @@ vim.pack.add({
   -- so look out for treesitter this config might not work for you
   { src='https://github.com/nvim-treesitter/nvim-treesitter', version='main' },
   'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/nvim-lualine/lualine.nvim',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
   'https://github.com/nvim-telescope/telescope-ui-select.nvim',
+  'https://github.com/j-hui/fidget.nvim',
+  {
+    src = 'https://github.com/saghen/blink.cmp',
+    version = vim.version.range('1.0'),
+  },
 })
 
 require('plugins.tokyonight')
-
 require('nvim-treesitter.config').setup({
   ensure_installed = { 'dart' },
   auto_install = true,
   highlight = { enable = true },
   indent = { enable = true }
 })
-
 require('plugins.gitsigns')
+require('plugins.lualine')
+require('fidget').setup({})
+require('plugins.telescope')
+require('plugins.blink')
 
 -- You have to manually build fzfnative using :BuildFzfNative command this works on windows
 vim.api.nvim_create_user_command('BuildFzfNative', function()
@@ -38,5 +46,4 @@ vim.api.nvim_create_user_command('BuildFzfNative', function()
   print('telescope-fzf-native built; check build/libfzf.dll')
 end, {})
 
-require('plugins.telescope')
-
+vim.lsp.enable('dartls')

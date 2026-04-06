@@ -17,7 +17,7 @@ vim.opt.scrolloff = 10 -- keep 10 lines visible above/below cursor
 vim.opt.sidescrolloff = 10 -- keep 5 columns visible left/right of cursor during horizontal scroll
 vim.opt.pumheight = 10 -- max number of items to show in popup menu
 vim.opt.title = true -- show title
-vim.opt.laststatus = 3 -- always show the statusline
+vim.opt.laststatus = 2 -- always show the statusline
 vim.opt.showcmd = true -- show (partial) command in the last line of the screen
 vim.opt.showmode = true -- show current mode in command line
 vim.opt.signcolumn = "yes" -- always show 2 sign columns
@@ -38,18 +38,17 @@ vim.opt.swapfile = false -- disable swap file
 vim.opt.backup = false -- disable backup file
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir" -- undo directory path
-vim.opt.winborder = "rounded"
 
 -- TREESITTER SPECIFIC OPTIONS --
 -- Basic indent (Tree-sitter fallback)
--- vim.opt.autoindent = true
+vim.opt.autoindent = true
 -- Disable legacy indent engines (conflict with Tree-sitter)
 vim.opt.smartindent = false
--- vim.opt.cindent = false
+vim.opt.cindent = false
 -- Filetype handling (Tree-sitter friendly)
--- vim.opt.filetype = "on"           -- Detection
--- vim.opt.filetype.indent = "off"   -- No legacy indents
--- vim.cmd("filetype plugin on")     -- ftplugins (keymaps/options)
+vim.opt.filetype = "on"           -- Detection
+vim.opt.filetype.indent = "off"   -- No legacy indents
+vim.cmd("filetype plugin on")     -- ftplugins (keymaps/options)
 
 -- Indentation
 vim.opt.expandtab = true -- convert tabs to spaces
@@ -85,20 +84,4 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Move down half a page and keep cursor in middle" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Move up half a page and keep cursor in middle" })
 
--- Diagnostic Config & Keymaps
--- See :help vim.diagnostic.Opts
-vim.diagnostic.config {
-  update_in_insert = false,
-  severity_sort = true,
-  float = { border = "rounded", source = "if_many" },
-  underline = { severity = { min = vim.diagnostic.severity.WARN } },
-
-  -- Can switch between these as you prefer
-  virtual_text = true, -- Text shows up at the end of the line
-  virtual_lines = false, -- Text shows up underneath the line, with virtual lines
-
-  -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
-  jump = { float = true },
-}
-
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.lsp.config('*', { root_markers = { '.git' } })
